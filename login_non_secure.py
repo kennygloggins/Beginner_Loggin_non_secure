@@ -10,23 +10,25 @@
 def username():
     login_key = input('Please enter a Login Name: ')
     with open('logandpass.txt', 'r') as login_and_password:
+        login_and_password.seek(0)
         for line in login_and_password:
-            txt_key, value = line.split('=')
-            if txt_key == login_key:
-                print('That username has already been taken, please choose another.')
-                username()
+            if line.find('='):
+                txt_key, value = line.split('=')
+                while txt_key == login_key:
+                    login_key = input('That username has already been taken, please choose another:')
     return login_key
 
 
 def password():
     password1 = input('Please enter in a password: ')
     password2 = input('Please re-enter in a password: ')
-    if password1 != password2:
-        print('The passwords did not match, please try again.')
-        password()
-    else:
-        return password1
+    while password1 != password2:
+        password2 = input('Your passwords did no match, please try again: ')
+    return password1
 
 
 login = username()
 password = password()
+
+with open('logandpass.txt', 'a+') as login_and_password:
+        login_and_password.write(login + '=' + password + '\n')
