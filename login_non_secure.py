@@ -3,19 +3,21 @@
 # File: login_non_secure.py
 # Project: Beginner_Loggin_non_secure
 
-
 # Purpose of this file is to practice my programing by making a login prompt.
-
-
-def username():
-    login_key = input('Please enter a Login Name: ')
+def username_cache():
+    user_lst = []
     with open('logandpass.txt', 'r') as login_and_password:
         login_and_password.seek(0)
         for line in login_and_password:
             if line.find('='):
                 txt_key, value = line.split('=')
-                while txt_key == login_key:
-                    login_key = input('That username has already been taken, please choose another:')
+                user_lst.append(txt_key)
+        return user_lst
+
+def username():
+    login_key = input('Please enter a Login Name: ')
+    while username_cache().count(login_key) > 0:
+        login_key = input('Username has already been taken, please try again:')
     return login_key
 
 
