@@ -5,7 +5,7 @@
 
 from tkinter import *
 import sqlite3
-import time
+
 
 root = Tk()
 root.title('tkinter test')
@@ -43,7 +43,7 @@ def submit(event):
         if not q and not p:
             # Insert Into Table:
             c.execute('INSERT INTO addresses VALUES (:user_name, :password1)', {'user_name': u_name.get(),
-                                                                            'password1': p_word.get()})
+                                                                                'password1': p_word.get()})
             # Clear the ext Boxes
             u_name.delete(0, END)
             p_word.delete(0, END)
@@ -135,65 +135,6 @@ userdb.commit()
 userdb.close()
 
 root.mainloop()
-
-
-'''
-def user_and_pass():
-    with open('logandpass.txt', 'a+') as login_and_password:
-        login_and_password.write(username + '=' + password + '\n')
-
-
-def username_check():
-    if username_cache().count(entry_username.get()) > 0:
-        label_wrong_username.grid(row=1, column=1)
-    if username_cache().count(entry_username.get()) == 0:
-        username = str(entry_username.get())
-        label_wrong_username.grid_remove()
-
-
-
-def password():
-    label_username.grid_remove()
-    entry_username.grid_remove()
-    username_enter_button.grid_remove()
-    label_password1 = Label(root, text='Enter in a valid password:')
-    label_password1.grid(row=0, column=0)
-    entry_password1 = Entry(root, width=80, borderwidth=3)
-    entry_password1.grid(row=0, column=1)
-    label_password2 = Label(root, text='Re-enter your password:')
-    label_password2.grid(row=2, column=0)
-    entry_password2 = Entry(root, width=80, borderwidth=3)
-    entry_password2.grid(row=2, column=1)
-    passwords_dmatch = Label(root, text='Passwords do not match, try again')
-    if entry_password1.get() != entry_password2.get():
-        passwords_dmatch.grid(row=3, column=1)
-    if entry_password1.get() == entry_password2.get():
-        passwords_dmatch.grid_remove()
-        password = str(entry_password1.get())
-
-
-
-
-
-
-
-
-
-
-label_username = Label(root, text='Please enter a Login Name: ')
-entry_username = Entry(root, width=40, borderwidth=3)
-entry_username.bind('<Return>', username_check)
-username_enter_button = Button(root, text='Submit')
-label_wrong_username = Label(root, text='Username has already been taken, please try again:')
-
-# root.bind('<Return>', getinfo)
-label_username.grid(row=0, column=0, pady=20, padx=10)
-entry_username.grid(row=0, column=1)
-username_enter_button.grid(row=0, column=2)
-'''
-
-
-
 
 
 ####       ####
