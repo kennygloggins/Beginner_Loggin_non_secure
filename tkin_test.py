@@ -26,7 +26,7 @@ c.execute(CREATE TABLE addresses (user_name text, password1 text))
 '''
 
 
-def submit(event):
+def submit(event=None):
 
     global do_match
 
