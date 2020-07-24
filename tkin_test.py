@@ -3,13 +3,13 @@
 # File: tkin_test.py
 # Project: Beginner_Loggin_non_secure
 
-from login_non_secure import username_cache
 from tkinter import *
 import sqlite3
+import time
 
 root = Tk()
 root.title('tkinter test')
-root.geometry('550x70')
+root.geometry('500x90')
 img = PhotoImage(file='/home/kgl/Pictures/pug.png')
 root.tk.call('wm', 'iconphoto', root._w, img)
 
@@ -24,21 +24,32 @@ c = userdb.cursor()
 # Create Table
 c.execute(CREATE TABLE addresses (user_name text, password1 text))
 '''
+
+
 def submit(event):
+
+    global do_match
 
     # Create database or connect to one
     userdb = sqlite3.connect('user_name_password.db')
 
     # Create cursor
     c = userdb.cursor()
+    q = query()
+    p = passwords()
 
-    if not query():
-        # do_match.remove_grid()
-        # Insert Into Table:
-        c.execute('INSERT INTO addresses VALUES (:user_name, :password1)', {'user_name': u_name.get(),
+    if not q:
+        do_match.grid_forget()
+        if not q and not p:
+            # Insert Into Table:
+            c.execute('INSERT INTO addresses VALUES (:user_name, :password1)', {'user_name': u_name.get(),
                                                                             'password1': p_word.get()})
+            # Clear the ext Boxes
+            u_name.delete(0, END)
+            p_word.delete(0, END)
+            p_word2.delete(0, END)
+
     else:
-        do_match = Label(root, text="Username already exists, try again.")
         do_match.grid(row=0, column=3, padx=3)
 
     # Commit Changes
@@ -47,9 +58,7 @@ def submit(event):
     # Close Connection
     userdb.close()
 
-    # Clear the ext Boxes
-    u_name.delete(0, END)
-    p_word.delete(0, END)
+
 
 
 def query():
@@ -60,12 +69,15 @@ def query():
     # Create cursor
     c = userdb.cursor()
 
+    # Grab a list of names in tuple form from addresses
     c.execute("SELECT user_name, user_name FROM addresses")
     usernames = c.fetchall()
-    print(usernames)
+
+    # Iterate through to see if username exist, if yes then return it.
     lst = [name for name in usernames]
     tup = [tup1 for (tup1, tup2) in lst]
     repeat = [uname for uname in tup if uname == u_name.get()]
+
     # Commit Changes
     userdb.commit()
 
@@ -73,21 +85,42 @@ def query():
     userdb.close()
 
     print(repeat)
-    return repeat
+    if len(u_name.get()) > 4:
+        return repeat
 
 
-#create txt boxes
+def passwords():
+
+    global do_matchp
+
+    # Grab both passwords and check if they are equal
+    if p_word.get() == p_word2.get() and len(p_word.get()) > 4:
+        do_matchp.grid_forget()
+        return False
+    else:
+        do_matchp.grid(row=2, column=3, padx=3)
+        return True
+
+
+# Create txt boxes
 u_name = Entry(root, width=20)
 u_name.grid(row=0, column=1, padx=10)
 
 p_word = Entry(root, width=20)
 p_word.grid(row=1, column=1, padx=10)
 
+p_word2 = Entry(root, width=20)
+p_word2.grid(row=2, column=1, padx=10)
+
 # Create txt box labels
 u_name_label = Label(root, text='Username:')
 u_name_label.grid(row=0, column=0)
 p_word_label = Label(root, text='Password:')
 p_word_label.grid(row=1, column=0)
+p_word2_label = Label(root, text='Re-enter Password:')
+p_word2_label.grid(row=2, column=0)
+do_match = Label(root, text="Username already exists, try again.")
+do_matchp = Label(root, text="Passwords don't match, try again.")
 
 
 # Create Submit Button
