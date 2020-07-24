@@ -9,7 +9,7 @@ import sqlite3
 
 root = Tk()
 root.title('tkinter test')
-root.geometry('500x90')
+root.geometry('535x150')
 img = PhotoImage(file='/home/kgl/Pictures/pug.png')
 root.tk.call('wm', 'iconphoto', root._w, img)
 
@@ -103,22 +103,26 @@ def passwords():
 
 
 # Create txt boxes
-u_name = Entry(root, width=20)
-u_name.grid(row=0, column=1, padx=10)
+u_name = Entry(root, width=30)
+u_name.grid(row=0, column=1, padx=5, pady=5)
 
-p_word = Entry(root, width=20)
-p_word.grid(row=1, column=1, padx=10)
+p_word = Entry(root, width=30)
+p_word.grid(row=2, column=1, padx=5, pady=5)
 
-p_word2 = Entry(root, width=20)
-p_word2.grid(row=2, column=1, padx=10)
+p_word2 = Entry(root, width=30)
+p_word2.grid(row=4, column=1, padx=5, pady=5)
 
 # Create txt box labels
 u_name_label = Label(root, text='Username:')
 u_name_label.grid(row=0, column=0)
+u_name_label = Label(root, text='Username must be at least 5 characters')
+u_name_label.grid(row=1, column=1)
 p_word_label = Label(root, text='Password:')
-p_word_label.grid(row=1, column=0)
+p_word_label.grid(row=2, column=0)
+p_word_label2 = Label(root, text='Password must be at least 5 characters')
+p_word_label2.grid(row=3, column=1)
 p_word2_label = Label(root, text='Re-enter Password:')
-p_word2_label.grid(row=2, column=0)
+p_word2_label.grid(row=4, column=0)
 do_match = Label(root, text="Username already exists, try again.")
 do_matchp = Label(root, text="Passwords don't match, try again.")
 
@@ -126,7 +130,7 @@ do_matchp = Label(root, text="Passwords don't match, try again.")
 # Create Submit Button
 submit_btn = Button(root, text='Submit', command=submit)
 root.bind('<Return>', submit)
-submit_btn.grid(row=3, column=0, columnspan=2, ipadx=100)
+submit_btn.grid(row=5, column=1, columnspan=1, ipadx=120)
 
 # Commit Changes
 userdb.commit()
