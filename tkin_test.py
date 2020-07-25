@@ -69,14 +69,12 @@ def query():
     # Create cursor
     c = userdb.cursor()
 
+    # Store entered username
+    nameg = str(u_name.get())
     # Grab a list of names in tuple form from addresses
-    c.execute("SELECT user_name, user_name FROM addresses")
-    usernames = c.fetchall()
-
-    # Iterate through to see if username exist, if yes then return it.
-    lst = [name for name in usernames]
-    tup = [tup1 for (tup1, tup2) in lst]
-    repeat = [uname for uname in tup if uname == u_name.get()]
+    c.execute("SELECT * FROM addresses WHERE user_name=?", (nameg,))
+    usernames = c.fetchone()
+    print(usernames)
 
     # Commit Changes
     userdb.commit()
@@ -84,9 +82,9 @@ def query():
     # Close Connection
     userdb.close()
 
-    print(repeat)
+
     if len(u_name.get()) > 4:
-        return repeat
+        return usernames
 
 
 def passwords():
