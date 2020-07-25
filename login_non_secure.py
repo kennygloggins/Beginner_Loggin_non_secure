@@ -6,6 +6,7 @@
 # Purpose of this file is to practice my programing by making a login prompt.
 
 # Strips usernames separated by '=' from a file and stores them in list 'user_lst'
+'''
 def username_cache():
     user_lst = []
     with open('logandpass.txt', 'r') as login_and_password:
@@ -42,3 +43,4 @@ password = password()
 # Adds the valid username and password separated by '=' to 'logandpass.txt'
 with open('logandpass.txt', 'a+') as login_and_password:
         login_and_password.write(login + '=' + password + '\n')
+'''
