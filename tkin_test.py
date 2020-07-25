@@ -6,6 +6,11 @@
 from tkinter import *
 import sqlite3
 
+# Create database or connect to one
+userdb = sqlite3.connect('user_name_password.db')
+
+# Create cursor
+c = userdb.cursor()
 
 root = Tk()
 root.title('tkinter test')
@@ -13,12 +18,6 @@ root.geometry('535x150')
 img = PhotoImage(file='/home/kgl/Pictures/pug.png')
 root.tk.call('wm', 'iconphoto', root._w, img)
 
-
-# Create database or connect to one
-userdb = sqlite3.connect('user_name_password.db')
-
-# Create cursor
-c = userdb.cursor()
 
 '''
 # Create Table
@@ -30,20 +29,16 @@ def submit(event=None):
 
     global do_match
 
-    # Create database or connect to one
-    userdb = sqlite3.connect('user_name_password.db')
-
-    # Create cursor
-    c = userdb.cursor()
     q = query()
     p = passwords()
 
-    if not q:
+    if q is None:
         do_match.grid_forget()
-        if not q and not p:
+        if q is None and not p:
             # Insert Into Table:
-            c.execute('INSERT INTO addresses VALUES (:user_name, :password1)', {'user_name': u_name.get(),
-                                                                                'password1': p_word.get()})
+            with userdb:
+                c.execute('INSERT INTO addresses VALUES (:user_name, :password1)', {'user_name': u_name.get(),
+                                                                                    'password1': p_word.get()})
             # Clear the ext Boxes
             u_name.delete(0, END)
             p_word.delete(0, END)
@@ -52,22 +47,8 @@ def submit(event=None):
     else:
         do_match.grid(row=0, column=3, padx=3)
 
-    # Commit Changes
-    userdb.commit()
-
-    # Close Connection
-    userdb.close()
-
-
-
 
 def query():
-
-    # Create database or connect to one
-    userdb = sqlite3.connect('user_name_password.db')
-
-    # Create cursor
-    c = userdb.cursor()
 
     # Store entered username
     nameg = str(u_name.get())
@@ -76,14 +57,7 @@ def query():
     usernames = c.fetchone()
     print(usernames)
 
-    # Commit Changes
-    userdb.commit()
-
-    # Close Connection
-    userdb.close()
-
-
-    if len(u_name.get()) > 4:
+    if len(nameg) > 4:
         return usernames
 
 
@@ -130,14 +104,13 @@ submit_btn = Button(root, text='Submit', command=submit)
 root.bind('<Return>', submit)
 submit_btn.grid(row=5, column=1, columnspan=1, ipadx=120)
 
+root.mainloop()
+
 # Commit Changes
 userdb.commit()
 
 # Close Connection
 userdb.close()
-
-root.mainloop()
-
 
 ####       ####
 #### Notes ####
