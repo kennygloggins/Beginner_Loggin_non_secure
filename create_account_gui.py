@@ -1,6 +1,6 @@
 # By: Kenny_G_Loggins
 # Created on: 7/23/20, 11:52 AM
-# File: tkin_test.py
+# File: create_account_gui.py
 # Project: Beginner_Loggin_non_secure
 
 from tkinter import *
