@@ -79,11 +79,11 @@ def query():
     usernames = c.fetchone()
     print(usernames)
 
-    if not usernames and (nameg) > 4:
+    if not usernames and len(nameg) > 4:
         name_length.grid_forget()
         do_match.grid_forget()
         return usernames
-    elif usernames and len(nameg) <= 4:
+    elif len(nameg) <= 4:
         do_match.grid_forget()
         name_length.grid(row=0, column=3, sticky=W)
         return usernames
