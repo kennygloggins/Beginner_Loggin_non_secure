@@ -193,7 +193,6 @@ class Ui_MainWindow(object):
         self.login_login_cancel.clicked.connect(self.lap_window)
         self.create_login_cancel.clicked.connect(self.lap_window)
 
-
     # Set widget index
     def lap_window(self):
         self.stackedWidget.setCurrentIndex(0)
@@ -229,7 +228,6 @@ class Ui_MainWindow(object):
         # Everything entered was valid, exit.
         if i == 'good good':
             exit()
-
 
     def create_goget(self):
         # Grab the user's input and test if it's valid through create_account_fun.py
@@ -291,7 +289,6 @@ class Ui_MainWindow(object):
         self.login_username_label.setText(_translate("MainWindow", "Username:"))
         self.login_password_label.setText(_translate("MainWindow", "Password:"))
         self.login_warning_password.setText(_translate("MainWindow", ""))
-
 
 
 if __name__ == "__main__":

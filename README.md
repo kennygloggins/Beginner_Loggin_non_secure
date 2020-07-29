@@ -9,6 +9,6 @@ Login_non_secure.py:
 Tkin_test.py:
   -My second attempt using a gui this time and sqlite.
   -Uncomment lines 23 and 24 for the first time you run so a table can be made
-   named addresses.
+   named uandp.
   -Comment out lines 18 and 19 or change the file location to a picture you'd like to use
    for the window icon.
