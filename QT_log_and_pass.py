@@ -21,6 +21,10 @@ userdb.close()
 '''
 
 class Ui_MainWindow(object):
+
+    login_warning = False
+    create_warning = True
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(514, 317)
@@ -89,6 +93,7 @@ class Ui_MainWindow(object):
         self.create_password_input.setEchoMode(QtWidgets.QLineEdit.Password)
         self.create_password_input.setAlignment(QtCore.Qt.AlignCenter)
         self.create_password_input.setObjectName("create_password_input")
+        self.create_password_input.setPlaceholderText('> 4 characters')
         self.create_login_button = QtWidgets.QPushButton(self.page_2)
         self.create_login_button.setGeometry(QtCore.QRect(180, 240, 99, 38))
         self.create_login_button.setObjectName("create_login_button")
@@ -112,6 +117,7 @@ class Ui_MainWindow(object):
         self.create_username_input.setGeometry(QtCore.QRect(205, 33, 152, 36))
         self.create_username_input.setAlignment(QtCore.Qt.AlignCenter)
         self.create_username_input.setObjectName("create_username_input")
+        self.create_username_input.setPlaceholderText('> 4 characters')
         self.create_warning_password = QtWidgets.QLabel(self.page_2)
         self.create_warning_password.setGeometry(QtCore.QRect(205, 145, 152, 20))
         self.create_warning_password.setScaledContents(False)
@@ -201,14 +207,59 @@ class Ui_MainWindow(object):
         self.login_login_cancel.clicked.connect(self.lap_window)
         self.create_login_cancel.clicked.connect(self.lap_window)
 
-    # Set widget index
+        # Tab order and focus for login window
+        self.login_username_input.setTabOrder(self.login_username_input, self.login_password_input)
+        self.login_password_input.setTabOrder(self.login_password_input, self.login_login_button)
+        self.login_login_button.setTabOrder(self.login_login_button, self.login_login_cancel)
+        self.login_login_cancel.setTabOrder(self.login_login_cancel, self.login_username_input)
+
+
+        # Tab order and focus for create account window
+        self.create_username_input.setTabOrder(self.create_username_input, self.create_password_input)
+        self.create_password_input.setTabOrder(self.create_password_input, self.create_repass_input)
+        self.create_repass_input.setTabOrder(self.create_repass_input, self.create_login_button)
+        self.create_login_button.setTabOrder(self.create_login_button, self.create_login_cancel)
+        self.create_login_cancel.setTabOrder(self.create_login_cancel, self.create_username_input)
+
+        # Set focus
+        self.create_username_input.setFocus()
+        self.login_username_input.setFocus()
+        self.login_lap_button.setFocus()
+
+    # Set widget index and clear warnings
     def lap_window(self):
+        _translate = QtCore.QCoreApplication.translate
+        if self.login_warning == True:
+            self.login_warning_username.setText(_translate("Dialog", ""))
+            self.login_x_username_2.setPixmap(QtGui.QPixmap(""))
+            self.login_warning_password.setText(_translate("Dialog", ""))
+            self.login_x_pass.setPixmap(QtGui.QPixmap(""))
+        if self.create_warning == True:
+            self.login_x_username.setPixmap(QtGui.QPixmap(""))
+            self.create_warning_username.setText(_translate("Dialog", ""))
+            self.create_x_password.setPixmap(QtGui.QPixmap(""))
+            self.create_x_repass.setPixmap(QtGui.QPixmap(""))
+            self.create_warning_password.setText(_translate("Dialog", ""))
         self.stackedWidget.setCurrentIndex(0)
 
+
     def create_window(self):
+        _translate = QtCore.QCoreApplication.translate
+        if self.login_warning == True:
+            self.login_warning_username.setText(_translate("Dialog", ""))
+            self.login_x_username_2.setPixmap(QtGui.QPixmap(""))
+            self.login_warning_password.setText(_translate("Dialog", ""))
+            self.login_x_pass.setPixmap(QtGui.QPixmap(""))
         self.stackedWidget.setCurrentIndex(1)
 
     def login_window(self):
+        _translate = QtCore.QCoreApplication.translate
+        if self.create_warning == True:
+            self.login_x_username.setPixmap(QtGui.QPixmap(""))
+            self.create_warning_username.setText(_translate("Dialog", ""))
+            self.create_x_password.setPixmap(QtGui.QPixmap(""))
+            self.create_x_repass.setPixmap(QtGui.QPixmap(""))
+            self.create_warning_password.setText(_translate("Dialog", ""))
         self.stackedWidget.setCurrentIndex(2)
 
     def login_goget(self):
@@ -222,16 +273,20 @@ class Ui_MainWindow(object):
         if i.count('ubad') > 0 or i.count('ublank') > 0:
             self.login_warning_username.setText(_translate("Dialog", "Invalid username."))
             self.login_x_username_2.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
+            self.login_warning = True
         else:
             self.login_warning_username.setText(_translate("Dialog", ""))
             self.login_x_username_2.setPixmap(QtGui.QPixmap(""))
+            self.login_warning = False
 
         if i.count('pbad') > 0 or i.count('pblank') > 0:
             self.login_warning_password.setText(_translate("Dialog", "Invalid password."))
             self.login_x_pass.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
+            self.login_warning = True
         else:
             self.login_warning_password.setText(_translate("Dialog", ""))
             self.login_x_pass.setPixmap(QtGui.QPixmap(""))
+            self.login_warning = False
 
         # Everything entered was valid, exit.
         if i == 'good good':
@@ -250,29 +305,36 @@ class Ui_MainWindow(object):
         if i.count('qgood') > 0:
             self.login_x_username.setPixmap(QtGui.QPixmap(""))
             self.create_warning_username.setText(_translate("Dialog", ""))
+            self.create_warning = False
         elif i.count('qshort') > 0:
             self.login_x_username.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
             self.create_warning_username.setText(_translate("Dialog", "Name too short."))
+            self.create_warning = True
         else:
             self.login_x_username.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
             self.create_warning_username.setText(_translate("Dialog", "Invalid username."))
+            self.create_warning = True
 
         if i.count('pgood') > 0:
             self.create_x_password.setPixmap(QtGui.QPixmap(""))
             self.create_x_repass.setPixmap(QtGui.QPixmap(""))
             self.create_warning_password.setText(_translate("Dialog", ""))
+            self.create_warning = False
         elif i.count('pshort') > 0:
             self.create_x_password.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
             self.create_x_repass.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
             self.create_warning_password.setText(_translate("Dialog", "Pass too short."))
+            self.create_warning = True
         elif i.count('pno'):
             self.create_x_password.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
             self.create_x_repass.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
             self.create_warning_password.setText(_translate("Dialog", "Don't match."))
+            self.create_warning = True
         else:
             self.create_x_password.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
             self.create_x_repass.setPixmap(QtGui.QPixmap("Nuvola_apps_error.svg"))
             self.create_warning_password.setText(_translate("Dialog", "Invalid password."))
+            self.create_warning = True
 
         # Everything entered was valid, goes to login page
         if i == 'good good':
